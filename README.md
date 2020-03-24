@@ -1,5 +1,5 @@
 # django-auto-prefetch
-Automatically prefetch foreign key values as neededa
+Automatically prefetch foreign key values as needed.
 
 ## Purpose
 
