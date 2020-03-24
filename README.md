@@ -48,7 +48,7 @@ list(qs)[0].question
 ```
 Such examples generally seem to be rarer and more likely to be visible during code inspection (vs {{choice.question}} in a template). And larger queries are usually a better failure mode than producing hundreds of queries.
 For this to actually produce inferior behavior in practice you need to:
-# fetch a large number of choices
-# filter out basically all of them
-# in a way that prevents garbage collection of the unfiltered ones
+- fetch a large number of choices
+- filter out basically all of them
+- in a way that prevents garbage collection of the unfiltered ones
 If any of those aren't true then automatic prefetching will still produce equivalent or better database behavior than without.
