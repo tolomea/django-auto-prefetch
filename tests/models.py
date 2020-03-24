@@ -7,8 +7,8 @@ class Friend(models.Model):
 
 
 class Vanilla(models.Model):
-    friend = models.ForeignKey(Friend, on_delete=models.CASCADE)
+    friend = models.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
 
 
 class Prefetch(auto_prefetch.Model):
-    friend = auto_prefetch.ForeignKey(Friend, on_delete=models.CASCADE)
+    friend = auto_prefetch.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
