@@ -54,4 +54,5 @@ For this to actually produce inferior behavior in practice you need to:
 
 If any of those aren't true then automatic prefetching will still produce equivalent or better database behavior than without.
 
-p.s. if you have concerns go look at the code, it's all in `auto-prefetch/__init__.py` and is fairly short.
+## p.s. 
+If you have concerns go look at the code, it's all in `auto-prefetch/__init__.py` and is fairly short.
