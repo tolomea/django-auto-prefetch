@@ -5,7 +5,15 @@ import pytest
 from . import models
 
 
-@pytest.mark.parametrize("Model,queries", [(models.Vanilla, 4), (models.Prefetch, 2)])
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 4),
+        (models.Prefetch, 2),
+        (models.MixedModel, 4),
+        (models.MixedField, 4),
+    ],
+)
 @pytest.mark.django_db
 def test_basic(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
@@ -16,7 +24,15 @@ def test_basic(django_assert_num_queries, Model, queries):
             print(obj.pk, obj.friend.pk)
 
 
-@pytest.mark.parametrize("Model,queries", [(models.Vanilla, 2), (models.Prefetch, 2)])
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 2),
+        (models.Prefetch, 2),
+        (models.MixedModel, 2),
+        (models.MixedField, 2),
+    ],
+)
 @pytest.mark.django_db
 def test_no_peers(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
@@ -27,7 +43,15 @@ def test_no_peers(django_assert_num_queries, Model, queries):
             print(obj.pk, obj.friend.pk)
 
 
-@pytest.mark.parametrize("Model,queries", [(models.Vanilla, 1), (models.Prefetch, 1)])
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 1),
+        (models.Prefetch, 1),
+        (models.MixedModel, 1),
+        (models.MixedField, 1),
+    ],
+)
 @pytest.mark.django_db
 def test_null(django_assert_num_queries, Model, queries):
     [Model.objects.create() for _ in range(3)]
@@ -37,7 +61,15 @@ def test_null(django_assert_num_queries, Model, queries):
             print(obj.pk, obj.friend)
 
 
-@pytest.mark.parametrize("Model,queries", [(models.Vanilla, 1), (models.Prefetch, 1)])
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 1),
+        (models.Prefetch, 1),
+        (models.MixedModel, 1),
+        (models.MixedField, 1),
+    ],
+)
 @pytest.mark.django_db
 def test_values(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
@@ -48,7 +80,15 @@ def test_values(django_assert_num_queries, Model, queries):
             print(obj_pk, friend_pk)
 
 
-@pytest.mark.parametrize("Model,queries", [(models.Vanilla, 7), (models.Prefetch, 2)])
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 7),
+        (models.Prefetch, 2),
+        (models.MixedModel, 7),
+        (models.MixedField, 7),
+    ],
+)
 @pytest.mark.django_db
 def test_multiples(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
@@ -105,7 +145,5 @@ def test_cascading(django_assert_num_queries, Model, Model2, queries):
             print(obj.pk, obj.other.pk, obj.other.friend.pk)
 
 
-# mixing parts of the system?
-# mixed nulls?
 # one 2 one
 # reverse one2one

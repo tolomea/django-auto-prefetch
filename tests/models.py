@@ -26,3 +26,13 @@ class Prefetch(auto_prefetch.Model):
 
 class Prefetch2(auto_prefetch.Model):
     other = auto_prefetch.ForeignKey(Prefetch, null=True, on_delete=models.CASCADE)
+
+
+class MixedField(models.Model):
+    friend = auto_prefetch.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
+    associates = models.ManyToManyField(Associate)
+
+
+class MixedModel(auto_prefetch.Model):
+    friend = models.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
+    associates = models.ManyToManyField(Associate)
