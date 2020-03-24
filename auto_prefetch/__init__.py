@@ -10,7 +10,7 @@ class ForwardManyToOneDescriptor(related_descriptors.ForwardManyToOneDescriptor)
             return False
         if self.is_cached(instance):  # already loaded
             return False
-        if self.field.get_local_related_value(instance) is None:  # _id field is null
+        if None in self.field.get_local_related_value(instance):  # field is null
             return False
         if len(getattr(instance, "_peers", [])) < 2:  # no peers no prefetch
             return False

@@ -7,7 +7,7 @@ from . import models
 @pytest.mark.django_db
 def test_basic(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
-    [Model.objects.create(friend=friend) for i in range(3)]
+    [Model.objects.create(friend=friend) for _ in range(3)]
 
     with django_assert_num_queries(queries):
         for obj in Model.objects.all():
@@ -28,7 +28,7 @@ def test_no_peers(django_assert_num_queries, Model, queries):
 @pytest.mark.parametrize("Model,queries", [(models.Vanilla, 1), (models.Prefetch, 1)])
 @pytest.mark.django_db
 def test_null(django_assert_num_queries, Model, queries):
-    Model.objects.create()
+    [Model.objects.create() for _ in range(3)]
 
     with django_assert_num_queries(queries):
         for obj in Model.objects.all():
@@ -39,7 +39,7 @@ def test_null(django_assert_num_queries, Model, queries):
 @pytest.mark.django_db
 def test_values(django_assert_num_queries, Model, queries):
     friend = models.Friend.objects.create()
-    [Model.objects.create(friend=friend) for i in range(3)]
+    [Model.objects.create(friend=friend) for _ in range(3)]
 
     with django_assert_num_queries(queries):
         for obj_pk, friend_pk in Model.objects.values_list("pk", "friend__pk"):
