@@ -15,6 +15,14 @@ class Vanilla(models.Model):
     associates = models.ManyToManyField(Associate)
 
 
+class Vanilla2(models.Model):
+    other = models.ForeignKey(Vanilla, null=True, on_delete=models.CASCADE)
+
+
 class Prefetch(auto_prefetch.Model):
     friend = auto_prefetch.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
     associates = models.ManyToManyField(Associate)
+
+
+class Prefetch2(auto_prefetch.Model):
+    other = auto_prefetch.ForeignKey(Prefetch, null=True, on_delete=models.CASCADE)

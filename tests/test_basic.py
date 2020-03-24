@@ -89,6 +89,23 @@ def test_garbage_collection():
     print(obj.pk, obj.friend)
 
 
-# cascades
+@pytest.mark.parametrize(
+    "Model,Model2,queries",
+    [(models.Vanilla, models.Vanilla2, 7), (models.Prefetch, models.Prefetch2, 3)],
+)
+@pytest.mark.django_db
+def test_cascading(django_assert_num_queries, Model, Model2, queries):
+    friend = models.Friend.objects.create()
+    for _ in range(3):
+        obj = Model.objects.create(friend=friend)
+        Model2.objects.create(other=obj)
+
+    with django_assert_num_queries(queries):
+        for obj in Model2.objects.all():
+            print(obj.pk, obj.other.pk, obj.other.friend.pk)
+
+
 # mixing parts of the system?
 # mixed nulls?
+# one 2 one
+# reverse one2one

@@ -47,6 +47,7 @@ Manager = models.Manager.from_queryset(QuerySet)
 class Model(models.Model):
     class Meta:
         abstract = True
+        base_manager_name = "prefetch_manager"
 
+    prefetch_manager = Manager()
     objects = Manager()
-    base_manager = Manager()
