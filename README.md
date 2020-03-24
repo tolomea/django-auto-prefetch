@@ -38,9 +38,9 @@ Some important points:
 - Many2Many and One2One fields are not changed at all.
 - Because these are foreign key fields the generated queries can't have more result rows than the original query and may have less. This eliminates any concern about a multiplicative query size explosion.
 - This feature will never result in more database queries as a prefetch will only be issued where the ORM was already going to fetch a related object.
-- Because it is triggered by fetching missing related objects it will not at all change the DB behavior of code which is full covered by prefetch_related (and select_related) calls.
+- Because it is triggered by fetching missing related objects it will not at all change the DB behavior of code which is fully covered by prefetch_related and/or select_related calls.
 - This will inherently chain across relations like choice.question.author, the conditions above still hold under such chaining.
-- It may result in larger data transfer between the database and Django in some situations.
+- In some rare situations it may result in larger data transfer between the database and Django (see below).
 An example of that last point is:
 ```python
 qs = Choice.objects.all()
