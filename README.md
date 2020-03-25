@@ -3,12 +3,12 @@ Automatically prefetch foreign key values as needed.
 
 ## Purpose
 
-When accessing a foreign key on a model instance, if the field's value has not yet been loaded then auto-prefetch will prefetch the field for all model instances loaded by the same queryset as the current model instance.
+When accessing a ForeignKey or OneToOneField (including in reverse) on a model instance, if the field's value has not yet been loaded then auto-prefetch will prefetch the field for all model instances loaded by the same queryset as the current model instance.
 This is enabled at the model level and totally automatic and transparent for users of the model.
 
 ## Usage
 
-Everywhere you use Model, QuerySet, Manager or ForeignKey from django.db.models instead use them from auto_prefetch. No other changes are required.
+Everywhere you use Model, QuerySet, Manager, ForeignKey or OneToOneField from django.db.models instead use them from auto_prefetch. No other changes are required.
 
 ## Background & Rationale
 
@@ -35,8 +35,8 @@ On the first iteration of the loop in the example above, when we first access a 
 This change results in the first snippet having the same database behavior as the second while reducing or eliminating all of the noted usability issues.
 
 Some important points:
-- Many2Many and One2One fields are not changed at all.
-- Because these are foreign key fields the generated queries can't have more result rows than the original query and may have less. This eliminates any concern about a multiplicative query size explosion.
+- ManyToMany fields are not changed at all.
+- Because these are foreign key and one2one fields the generated queries can't have more result rows than the original query and may have less. This eliminates any concern about a multiplicative query size explosion.
 - This feature will never result in more database queries as a prefetch will only be issued where the ORM was already going to fetch a related object.
 - Because it is triggered by fetching missing related objects it will not at all change the DB behavior of code which is fully covered by prefetch_related and/or select_related calls.
 - This will inherently chain across relations like choice.question.author, the conditions above still hold under such chaining.
@@ -60,5 +60,5 @@ If any of those aren't true then automatic prefetching will still produce equiva
 * https://groups.google.com/forum/m/#!topic/django-developers/EplZGj-ejvg
 * https://pypi.org/project/nplusone/
 
-## p.s. 
+## p.s.
 If you have concerns go look at the code, it's all in [`auto_prefetch/__init__.py`](auto_prefetch/__init__.py) and is fairly short.
