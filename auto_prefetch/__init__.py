@@ -4,13 +4,17 @@ from django.db import models
 from django.db.models.fields import related_descriptors
 
 
-class ForwardDescriptorMixin:
+class DescriptorMixin:
+    def _field_name(self):
+        return self.field.name
+
+    def _is_cached(self, instance):
+        return self.is_cached(instance)
+
     def _should_prefetch(self, instance):
         if instance is None:  # getattr on the model class passes None to the descriptor
             return False
-        if self.is_cached(instance):  # already loaded
-            return False
-        if None in self.field.get_local_related_value(instance):  # field is null
+        if self._is_cached(instance):  # already loaded
             return False
         if len(getattr(instance, "_peers", [])) < 2:  # no peers no prefetch
             return False
@@ -18,10 +22,17 @@ class ForwardDescriptorMixin:
 
     def __get__(self, instance, instance_type=None):
         if self._should_prefetch(instance):
-            prefetch = models.query.Prefetch(self.field.name)
-            peers = [p for p in instance._peers.values() if not self.is_cached(p)]
+            prefetch = models.query.Prefetch(self._field_name())
+            peers = [p for p in instance._peers.values() if not self._is_cached(p)]
             models.query.prefetch_related_objects(peers, prefetch)
         return super().__get__(instance, instance_type)
+
+
+class ForwardDescriptorMixin(DescriptorMixin):
+    def _should_prefetch(self, instance):
+        if not super()._should_prefetch(instance):
+            return False
+        return None not in self.field.get_local_related_value(instance)  # field is null
 
 
 class ForwardManyToOneDescriptor(
@@ -36,24 +47,14 @@ class ForwardOneToOneDescriptor(
     pass
 
 
-class ReverseOneToOneDescriptor(related_descriptors.ReverseOneToOneDescriptor):
-    def _should_prefetch(self, instance):
-        if instance is None:  # getattr on the model class passes None to the descriptor
-            return False
-        if self.related.is_cached(instance):  # already loaded
-            return False
-        if len(getattr(instance, "_peers", [])) < 2:  # no peers no prefetch
-            return False
-        return True
+class ReverseOneToOneDescriptor(
+    DescriptorMixin, related_descriptors.ReverseOneToOneDescriptor
+):
+    def _is_cached(self, instance):
+        return self.related.is_cached(instance)
 
-    def __get__(self, instance, instance_type=None):
-        if self._should_prefetch(instance):
-            prefetch = models.query.Prefetch(self.related.get_accessor_name())
-            peers = [
-                p for p in instance._peers.values() if not self.related.is_cached(p)
-            ]
-            models.query.prefetch_related_objects(peers, prefetch)
-        return super().__get__(instance, instance_type)
+    def _field_name(self):
+        return self.related.get_accessor_name()
 
 
 class ForeignKey(models.ForeignKey):
