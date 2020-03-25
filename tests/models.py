@@ -36,3 +36,23 @@ class MixedField(models.Model):
 class MixedModel(auto_prefetch.Model):
     friend = models.ForeignKey(Friend, null=True, on_delete=models.CASCADE)
     associates = models.ManyToManyField(Associate)
+
+
+class VanillaReverse(models.Model):
+    pass
+
+
+class VanillaForward(models.Model):
+    friend = models.OneToOneField(
+        VanillaReverse, on_delete=models.CASCADE, related_name="friend", null=True
+    )
+
+
+class PrefetchReverse(auto_prefetch.Model):
+    pass
+
+
+class PrefetchForward(auto_prefetch.Model):
+    friend = auto_prefetch.OneToOneField(
+        PrefetchReverse, on_delete=models.CASCADE, related_name="friend", null=True
+    )

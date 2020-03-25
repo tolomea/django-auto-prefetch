@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.fields import related_descriptors
 
 
-class ForwardManyToOneDescriptor(related_descriptors.ForwardManyToOneDescriptor):
+class ForwardDescriptorMixin:
     def _should_prefetch(self, instance):
         if instance is None:  # getattr on the model class passes None to the descriptor
             return False
@@ -24,10 +24,45 @@ class ForwardManyToOneDescriptor(related_descriptors.ForwardManyToOneDescriptor)
         return super().__get__(instance, instance_type)
 
 
+class ForwardManyToOneDescriptor(
+    ForwardDescriptorMixin, related_descriptors.ForwardManyToOneDescriptor
+):
+    pass
+
+
+class ForwardOneToOneDescriptor(
+    ForwardDescriptorMixin, related_descriptors.ForwardOneToOneDescriptor
+):
+    pass
+
+
+class ReverseOneToOneDescriptor(related_descriptors.ReverseOneToOneDescriptor):
+    def _should_prefetch(self, instance):
+        if instance is None:  # getattr on the model class passes None to the descriptor
+            return False
+        if self.related.is_cached(instance):  # already loaded
+            return False
+        if len(getattr(instance, "_peers", [])) < 2:  # no peers no prefetch
+            return False
+        return True
+
+    def __get__(self, instance, instance_type=None):
+        if self._should_prefetch(instance):
+            prefetch = models.query.Prefetch(self.related.get_accessor_name())
+            peers = [
+                p for p in instance._peers.values() if not self.related.is_cached(p)
+            ]
+            models.query.prefetch_related_objects(peers, prefetch)
+        return super().__get__(instance, instance_type)
+
+
 class ForeignKey(models.ForeignKey):
-    def contribute_to_class(self, cls, name, *args, **kwargs):
-        super().contribute_to_class(cls, name, *args, **kwargs)
-        setattr(cls, self.name, ForwardManyToOneDescriptor(self))
+    forward_related_accessor_class = ForwardManyToOneDescriptor
+
+
+class OneToOneField(models.OneToOneField):
+    forward_related_accessor_class = ForwardOneToOneDescriptor
+    related_accessor_class = ReverseOneToOneDescriptor
 
 
 class QuerySet(models.QuerySet):

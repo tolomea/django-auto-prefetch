@@ -1,6 +1,7 @@
 import gc
 
 import pytest
+from django.core.exceptions import ObjectDoesNotExist
 
 from . import models
 
@@ -50,6 +51,10 @@ def test_no_peers(django_assert_num_queries, Model, queries):
         (models.Prefetch, 1),
         (models.MixedModel, 1),
         (models.MixedField, 1),
+        (models.VanillaForward, 1),
+        (models.PrefetchForward, 1),
+        (models.VanillaReverse, 4),
+        (models.PrefetchReverse, 2),
     ],
 )
 @pytest.mark.django_db
@@ -58,7 +63,10 @@ def test_null(django_assert_num_queries, Model, queries):
 
     with django_assert_num_queries(queries):
         for obj in Model.objects.all():
-            print(obj.pk, obj.friend)
+            try:
+                print(obj.pk, obj.friend)
+            except ObjectDoesNotExist:
+                pass
 
 
 @pytest.mark.parametrize(
@@ -145,5 +153,44 @@ def test_cascading(django_assert_num_queries, Model, Model2, queries):
             print(obj.pk, obj.other.pk, obj.other.friend.pk)
 
 
-# one 2 one
-# reverse one2one
+@pytest.mark.parametrize(
+    "Model,FriendModel,queries",
+    [
+        (models.VanillaForward, models.VanillaReverse, 4),
+        (models.PrefetchForward, models.PrefetchReverse, 2),
+    ],
+)
+@pytest.mark.django_db
+def test_basic_one2one(django_assert_num_queries, Model, FriendModel, queries):
+    for _ in range(3):
+        friend = FriendModel.objects.create()
+        Model.objects.create(friend=friend)
+
+    with django_assert_num_queries(queries):
+        for obj in Model.objects.all():
+            print(obj.pk, obj.friend.pk)
+
+    with django_assert_num_queries(queries):
+        for obj in FriendModel.objects.all():
+            print(obj.pk, obj.friend.pk)
+
+
+@pytest.mark.parametrize(
+    "Model,FriendModel,queries",
+    [
+        (models.VanillaForward, models.VanillaReverse, 2),
+        (models.PrefetchForward, models.PrefetchReverse, 2),
+    ],
+)
+@pytest.mark.django_db
+def test_one2one_no_peers(django_assert_num_queries, Model, FriendModel, queries):
+    friend = FriendModel.objects.create()
+    Model.objects.create(friend=friend)
+
+    with django_assert_num_queries(queries):
+        for obj in Model.objects.all():
+            print(obj.pk, obj.friend.pk)
+
+    with django_assert_num_queries(queries):
+        for obj in FriendModel.objects.all():
+            print(obj.pk, obj.friend.pk)
