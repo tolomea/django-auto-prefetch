@@ -61,4 +61,4 @@ If any of those aren't true then automatic prefetching will still produce equiva
 * https://pypi.org/project/nplusone/
 
 ## p.s. 
-If you have concerns go look at the code, it's all in `auto_prefetch/__init__.py` and is fairly short.
+If you have concerns go look at the code, it's all in [`auto_prefetch/__init__.py`](auto_prefetch/__init__.py) and is fairly short.
