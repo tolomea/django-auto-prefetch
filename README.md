@@ -56,6 +56,7 @@ If any of those aren't true then automatic prefetching will still produce equiva
 
 ## See Also
 
+* https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/
 * https://groups.google.com/forum/m/#!topic/django-developers/EplZGj-ejvg
 * https://pypi.org/project/nplusone/
 
