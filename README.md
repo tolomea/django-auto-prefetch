@@ -54,5 +54,10 @@ For this to actually produce inferior behavior in practice you need to:
 
 If any of those aren't true then automatic prefetching will still produce equivalent or better database behavior than without.
 
+## See Also
+
+* https://groups.google.com/forum/m/#!topic/django-developers/EplZGj-ejvg
+* https://pypi.org/project/nplusone/
+
 ## p.s. 
 If you have concerns go look at the code, it's all in `auto_prefetch/__init__.py` and is fairly short.
