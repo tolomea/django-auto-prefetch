@@ -12,13 +12,11 @@ class DescriptorMixin:
         return self.is_cached(instance)
 
     def _should_prefetch(self, instance):
-        if instance is None:  # getattr on the model class passes None to the descriptor
-            return False
-        if self._is_cached(instance):  # already loaded
-            return False
-        if len(getattr(instance, "_peers", [])) < 2:  # no peers no prefetch
-            return False
-        return True
+        return (
+            instance is not None  # getattr on the model class passes None to the descriptor
+            and not self._is_cached(instance)  # already loaded
+            and len(getattr(instance, "_peers", [])) >= 2  # no peers no prefetch
+        )
 
     def __get__(self, instance, instance_type=None):
         if self._should_prefetch(instance):
@@ -30,9 +28,10 @@ class DescriptorMixin:
 
 class ForwardDescriptorMixin(DescriptorMixin):
     def _should_prefetch(self, instance):
-        if not super()._should_prefetch(instance):
-            return False
-        return None not in self.field.get_local_related_value(instance)  # field is null
+        return (
+            super()._should_prefetch(instance)
+            and None not in self.field.get_local_related_value(instance)  # field is null
+        )
 
 
 class ForwardManyToOneDescriptor(
