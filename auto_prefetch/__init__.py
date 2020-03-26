@@ -13,7 +13,7 @@ class DescriptorMixin:
 
     def _should_prefetch(self, instance):
         return (
-            instance is not None  # getattr on the model class passes None to the descriptor
+            instance is not None  # getattr on the class passes None to the descriptor
             and not self._is_cached(instance)  # already loaded
             and len(getattr(instance, "_peers", [])) >= 2  # no peers no prefetch
         )
@@ -28,10 +28,11 @@ class DescriptorMixin:
 
 class ForwardDescriptorMixin(DescriptorMixin):
     def _should_prefetch(self, instance):
-        return (
-            super()._should_prefetch(instance)
-            and None not in self.field.get_local_related_value(instance)  # field is null
-        )
+        return super()._should_prefetch(
+            instance
+        ) and None not in self.field.get_local_related_value(
+            instance
+        )  # field is null
 
 
 class ForwardManyToOneDescriptor(
@@ -86,3 +87,13 @@ class Model(models.Model):
 
     prefetch_manager = Manager()
     objects = Manager()
+
+    def __getstate__(self):
+        # drop the peers info when pickling etc
+        res = super().__getstate__()
+        if "_peers" not in res:  # pragma: no cover
+            return res
+
+        res = dict(res)
+        del res["_peers"]
+        return res

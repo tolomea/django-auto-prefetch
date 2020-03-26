@@ -1,4 +1,5 @@
 import gc
+import pickle
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
@@ -193,4 +194,24 @@ def test_one2one_no_peers(django_assert_num_queries, Model, FriendModel, queries
 
     with django_assert_num_queries(queries):
         for obj in FriendModel.objects.all():
+            print(obj.pk, obj.friend.pk)
+
+
+@pytest.mark.parametrize(
+    "Model,queries",
+    [
+        (models.Vanilla, 4),
+        (models.Prefetch, 4),
+        (models.MixedModel, 4),
+        (models.MixedField, 4),
+    ],
+)
+@pytest.mark.django_db
+def test_pickle(django_assert_num_queries, Model, queries):
+    friend = models.Friend.objects.create()
+    [Model.objects.create(friend=friend) for _ in range(3)]
+
+    with django_assert_num_queries(queries):
+        for obj in Model.objects.all():
+            obj = pickle.loads(pickle.dumps(obj))
             print(obj.pk, obj.friend.pk)
