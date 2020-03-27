@@ -10,12 +10,34 @@ This is enabled at the model level and totally automatic and transparent for use
 
 Change all these imports from `django.db.models` to `auto_prefetch`:
 
-* `from django.db.models import Model` -> `from auto_prefetch import Model`
-* `from django.db.models import QuerySet` -> `from auto_prefetch import QuerySet`
-* `from django.db.models import Manager` -> `from auto_prefetch import Manager`
-* `from django.db.models import OneToOneField` -> `from auto_prefetch import OneToOneField`
+* `ForeignKey`
+* `Manager`
+* `Model`
+* `OneToOneField`
+* `QuerySet`
 
-If you use custom subclasses of any of these classes, you should be able to swap for the `auto_prefetch` ones in your classes' bases.
+For example, if you had:
+
+```python
+from django.db import models
+
+
+class Book(models.Model):
+    author = models.ForeignKey('Author', on delete=models.CASCADE)
+```
+
+...swap to:
+
+```python
+import auto_prefetch
+from django.db import models
+
+
+class Book(auto_prefetch.Model):
+    author = auto_prefetch.ForeignKey('Author', on delete=models.CASCADE)
+```
+
+If you use custom subclasses of any of these classes, you should be able to swap for the `auto_prefetch` versions in your subclasses' bases.
 
 After doing this, run `python manage.py makemigrations` to generate migrations, to set [the `Meta.base_manager_name` option](https://docs.djangoproject.com/en/3.0/ref/models/options/#base-manager-name) to `prefetch_manager` on every model you've converted.
 This is to make sure auto-prefetching happens on related managers.
