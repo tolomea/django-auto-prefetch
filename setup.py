@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-auto-prefetch",
-    version="0.0.4",
+    version="0.0.5",
     author="Gordon Wrigley",
     author_email="gordon.wrigley@gmail.com",
     description="git@github.com:tolomea/django-auto-prefetch.git",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/tolomea/django-auto-prefetch",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["tests"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
