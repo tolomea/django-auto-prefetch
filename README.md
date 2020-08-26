@@ -23,7 +23,7 @@ from django.db import models
 
 
 class Book(models.Model):
-    author = models.ForeignKey('Author', on delete=models.CASCADE)
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
 ```
 
 ...swap to:
@@ -34,7 +34,7 @@ from django.db import models
 
 
 class Book(auto_prefetch.Model):
-    author = auto_prefetch.ForeignKey('Author', on delete=models.CASCADE)
+    author = auto_prefetch.ForeignKey('Author', on_delete=models.CASCADE)
 ```
 
 If you use custom subclasses of any of these classes, you should be able to swap for the `auto_prefetch` versions in your subclasses' bases.
