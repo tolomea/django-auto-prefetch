@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-auto-prefetch",
-    version="0.0.5",
+    version="0.0.6",
     author="Gordon Wrigley",
     author_email="gordon.wrigley@gmail.com",
     description="git@github.com:tolomea/django-auto-prefetch.git",

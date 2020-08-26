@@ -85,8 +85,8 @@ class Model(models.Model):
         abstract = True
         base_manager_name = "prefetch_manager"
 
-    prefetch_manager = Manager()
     objects = Manager()
+    prefetch_manager = Manager()
 
     def __getstate__(self):
         # drop the peers info when pickling etc
