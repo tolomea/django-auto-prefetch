@@ -1,5 +1,6 @@
-import auto_prefetch
 from django.db import models
+
+import auto_prefetch
 
 
 class Friend(models.Model):

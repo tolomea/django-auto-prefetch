@@ -70,7 +70,8 @@ class QuerySet(models.QuerySet):
     def _fetch_all(self):
         set_peers = self._result_cache is None
         super()._fetch_all()
-        # ModelIterable tests for query sets returning model instances vs values or value lists etc
+        # ModelIterable tests for query sets returning model instances vs
+        # values or value lists etc
         if set_peers and issubclass(self._iterable_class, models.query.ModelIterable):
             peers = WeakValueDictionary((id(o), o) for o in self._result_cache)
             for peer in peers.values():
