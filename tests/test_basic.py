@@ -4,7 +4,38 @@ import pickle
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
 
+import auto_prefetch
+
 from . import models
+
+
+def test_check_meta_inheritance_fail():
+    class TestModelBase(auto_prefetch.Model):
+        class Meta:
+            abstract = True
+
+    class TestModel1(TestModelBase):
+        pass
+
+    errors = TestModel1.check()
+
+    assert len(errors) == 1
+    assert errors[0].id == "auto_prefetch.E001"
+    assert errors[0].obj is TestModel1
+    assert errors[0].msg == (
+        "TestModel1 inherits from auto_prefetch.Model, but its Meta class does"
+        + " not inherit from auto_prefetch.Model.Meta"
+    )
+
+
+def test_check_meta_inheritance_success():
+    class TestModel2(auto_prefetch.Model):
+        class Meta(auto_prefetch.Model.Meta):
+            verbose_name = "My model"
+
+    errors = TestModel2.check()
+
+    assert errors == []
 
 
 @pytest.mark.parametrize(

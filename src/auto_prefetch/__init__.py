@@ -1,5 +1,6 @@
 from weakref import WeakValueDictionary
 
+from django.core import checks
 from django.db import models
 from django.db.models.fields import related_descriptors
 
@@ -98,3 +99,26 @@ class Model(models.Model):
         res = dict(res)
         del res["_peers"]
         return res
+
+    @classmethod
+    def check(cls, **kwargs):
+        errors = super().check(**kwargs)
+        errors.extend(cls._check_meta_inheritance())
+        return errors
+
+    @classmethod
+    def _check_meta_inheritance(cls):
+        errors = []
+        if not issubclass(cls.Meta, Model.Meta):
+            errors.append(
+                checks.Error(
+                    id="auto_prefetch.E001",
+                    obj=cls,
+                    msg=(
+                        f"{cls.__name__} inherits from auto_prefetch.Model,"
+                        + " but its Meta class does not inherit from"
+                        + " auto_prefetch.Model.Meta"
+                    ),
+                )
+            )
+        return errors

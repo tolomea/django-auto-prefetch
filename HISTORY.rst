@@ -1,6 +1,8 @@
 History
 =======
 
+* Add system check that the ``Meta`` class is inherited in all subclasses.
+
 0.0.6 (2020-07-29)
 ------------------
 
