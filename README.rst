@@ -1,14 +1,14 @@
 django-auto-prefetch
 ====================
 
-.. image:: https://github.com/tolomea/django-auto-prefetch/workflows/CI/badge.svg?branch=master
+.. image:: https://img.shields.io/github/workflow/status/tolomea/django-auto-prefetch/CI/master?style=for-the-badge
    :target: https://github.com/tolomea/django-auto-prefetch/actions?workflow=CI
 
-.. image:: https://img.shields.io/pypi/v/django-auto-prefetch.svg
+.. image:: https://img.shields.io/pypi/v/django-auto-prefetch.svg?style=for-the-badge
    :target: https://pypi.org/project/django-auto-prefetch/
 
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/python/black
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
+   :target: https://github.com/psf/black
 
 Automatically prefetch foreign key values as needed.
 
