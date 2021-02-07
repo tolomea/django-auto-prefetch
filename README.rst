@@ -1,7 +1,7 @@
 django-auto-prefetch
 ====================
 
-.. image:: https://img.shields.io/github/workflow/status/tolomea/django-auto-prefetch/CI/master?style=for-the-badge
+.. image:: https://img.shields.io/github/workflow/status/tolomea/django-auto-prefetch/CI/main?style=for-the-badge
    :target: https://github.com/tolomea/django-auto-prefetch/actions?workflow=CI
 
 .. image:: https://img.shields.io/pypi/v/django-auto-prefetch.svg?style=for-the-badge
@@ -178,5 +178,5 @@ P.S.
 ----
 
 If you have concerns go look at the code, it’s all in
-`auto_prefetch/__init__.py <https://github.com/tolomea/django-auto-prefetch/blob/master/src/auto_prefetch/__init__.py>`__
+`auto_prefetch/__init__.py <https://github.com/tolomea/django-auto-prefetch/blob/main/src/auto_prefetch/__init__.py>`__
 and is fairly short.
