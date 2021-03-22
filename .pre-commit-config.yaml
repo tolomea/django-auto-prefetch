@@ -16,11 +16,11 @@ repos:
   - id: black
     language_version: python3
 - repo: https://github.com/pycqa/isort
-  rev: 5.7.0
+  rev: 5.8.0
   hooks:
   - id: isort
 - repo: https://gitlab.com/pycqa/flake8
-  rev: 3.8.4
+  rev: 3.9.0
   hooks:
   - id: flake8
     additional_dependencies:
