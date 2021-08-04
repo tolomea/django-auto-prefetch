@@ -54,7 +54,7 @@ For example, if you had:
 
 
    class Book(models.Model):
-       author = models.ForeignKey('Author', on_delete=models.CASCADE)
+       author = models.ForeignKey("Author", on_delete=models.CASCADE)
 
 …swap to:
 
@@ -65,7 +65,7 @@ For example, if you had:
 
 
    class Book(auto_prefetch.Model):
-       author = auto_prefetch.ForeignKey('Author', on_delete=models.CASCADE)
+       author = auto_prefetch.ForeignKey("Author", on_delete=models.CASCADE)
 
 If you use custom subclasses of any of these classes, you should be able
 to swap for the ``auto_prefetch`` versions in your subclasses’ bases.
@@ -89,7 +89,7 @@ snippet:
 .. code:: python
 
    for choice in Choice.objects.all():
-       print(choice.question.question_text, ':', choice.choice_text)
+       print(choice.question.question_text, ":", choice.choice_text)
 
 This will do one query for the choices and then one query per choice to
 get that choice’s question.
@@ -99,8 +99,8 @@ This behavior can be avoided with correct application of
 
 .. code:: python
 
-   for choice in Choice.objects.prefetch_related('question'):
-       print(choice.question.question_text, ':', choice.choice_text)
+   for choice in Choice.objects.prefetch_related("question"):
+       print(choice.question.question_text, ":", choice.choice_text)
 
 This has several usability issues, notably:
 
