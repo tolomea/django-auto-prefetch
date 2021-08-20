@@ -5,6 +5,7 @@ prune tests
 include HISTORY.rst
 include LICENSE
 include README.rst
+include src/auto_prefetch/py.typed
 exclude .editorconfig
 exclude .pre-commit-config.yaml
 include pyproject.toml
