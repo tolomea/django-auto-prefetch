@@ -2,6 +2,8 @@
 History
 =======
 
+* Reduce memory footprint when fetching single objects.
+
 1.3.0 (2022-06-05)
 ------------------
 
@@ -31,8 +33,6 @@ History
 
 0.1.0 (2021-09-28)
 ------------------
-
-* Support Django 4.0.
 
 * Support Django 3.2.
 

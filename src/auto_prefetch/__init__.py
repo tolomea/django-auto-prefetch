@@ -99,7 +99,11 @@ class QuerySet(models.QuerySet):
         super()._fetch_all()
         # ModelIterable tests for query sets returning model instances vs
         # values or value lists etc
-        if set_peers and issubclass(self._iterable_class, models.query.ModelIterable):
+        if (
+            set_peers
+            and issubclass(self._iterable_class, models.query.ModelIterable)
+            and len(self._result_cache) >= 2
+        ):
             peers = WeakValueDictionary((id(o), o) for o in self._result_cache)
             for peer in peers.values():
                 peer._peers = peers
