@@ -2,6 +2,8 @@
 History
 =======
 
+* Support Django 4.0.
+
 * Support Django 3.2.
 
 * Add system check that the ``Meta`` class is inherited in all subclasses.
