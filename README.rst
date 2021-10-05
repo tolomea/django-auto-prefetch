@@ -29,7 +29,7 @@ model.
 Requirements
 ------------
 
-Python 3.6 to 3.9 supported.
+Python 3.6 to 3.10 supported.
 
 Django 2.2 to 4.0 supported.
 
