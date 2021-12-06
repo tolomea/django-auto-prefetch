@@ -20,7 +20,6 @@ if TYPE_CHECKING:  # pragma: no cover
         ) -> Any:
             ...
 
-
 else:
     DescriptorBase = object
 
