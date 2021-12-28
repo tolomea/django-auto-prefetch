@@ -2,12 +2,12 @@ global-exclude *.py[cod]
 prune __pycache__
 prune requirements
 prune tests
-include HISTORY.rst
-include LICENSE
-include README.rst
-include src/auto_prefetch/py.typed
 exclude .editorconfig
 exclude .pre-commit-config.yaml
-include pyproject.toml
 exclude build.sh
 exclude tox.ini
+include HISTORY.rst
+include LICENSE
+include pyproject.toml
+include README.rst
+include src/*/py.typed
