@@ -1,4 +1,6 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 from weakref import WeakValueDictionary
 
 from django.core import checks
@@ -15,8 +17,8 @@ if TYPE_CHECKING:  # pragma: no cover
 
         def __get__(
             self,
-            instance: Optional[models.Model],
-            instance_type: Optional[Type[models.Model]] = None,
+            instance: models.Model | None,
+            instance_type: type[models.Model] | None = None,
         ) -> Any:
             ...
 
@@ -31,7 +33,7 @@ class DescriptorMixin(DescriptorBase):
     def _is_cached(self, instance: models.Model) -> bool:
         return self.is_cached(instance)
 
-    def _should_prefetch(self, instance: Optional[models.Model]) -> bool:
+    def _should_prefetch(self, instance: models.Model | None) -> bool:
         return (
             instance is not None  # getattr on the class passes None to the descriptor
             and not self._is_cached(instance)  # already loaded
@@ -40,8 +42,8 @@ class DescriptorMixin(DescriptorBase):
 
     def __get__(
         self,
-        instance: Optional[models.Model],
-        instance_type: Optional[Type[models.Model]] = None,
+        instance: models.Model | None,
+        instance_type: type[models.Model] | None = None,
     ) -> Any:
         if instance is not None and self._should_prefetch(instance):
             prefetch = models.query.Prefetch(self._field_name())
@@ -51,7 +53,7 @@ class DescriptorMixin(DescriptorBase):
 
 
 class ForwardDescriptorMixin(DescriptorMixin):
-    def _should_prefetch(self, instance: Optional[models.Model]) -> bool:
+    def _should_prefetch(self, instance: models.Model | None) -> bool:
         return super()._should_prefetch(
             instance
         ) and None not in self.field.get_local_related_value(
@@ -113,7 +115,7 @@ class Model(models.Model):
     objects = Manager()
     prefetch_manager = Manager()
 
-    def __getstate__(self) -> Dict[str, Any]:
+    def __getstate__(self) -> dict[str, Any]:
         # drop the peers info when pickling etc
         res = super().__getstate__()
         if "_peers" not in res:  # pragma: no cover
@@ -124,13 +126,13 @@ class Model(models.Model):
         return res
 
     @classmethod
-    def check(cls, **kwargs: Any) -> List[checks.Error]:
-        errors: List[checks.Error] = super().check(**kwargs)
+    def check(cls, **kwargs: Any) -> list[checks.Error]:
+        errors: list[checks.Error] = super().check(**kwargs)
         errors.extend(cls._check_meta_inheritance())
         return errors
 
     @classmethod
-    def _check_meta_inheritance(cls) -> List[checks.Error]:
+    def _check_meta_inheritance(cls) -> list[checks.Error]:
         errors = []
         if not issubclass(cls.Meta, Model.Meta):
             errors.append(
