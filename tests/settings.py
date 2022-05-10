@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import os
 
-import django
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = "NOTASECRET"
@@ -16,9 +14,8 @@ DATABASES = {
     },
 }
 
-INSTALLED_APPS = ["tests"]
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-if django.VERSION >= (3, 2):  # pragma: no cover
-    DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+INSTALLED_APPS = ["tests"]
 
 USE_TZ = True

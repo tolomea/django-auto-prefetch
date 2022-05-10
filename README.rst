@@ -31,7 +31,7 @@ Requirements
 
 Python 3.7 to 3.10 supported.
 
-Django 2.2 to 4.0 supported.
+Django 3.2 to 4.0 supported.
 
 Usage
 -----
