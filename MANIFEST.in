@@ -1,4 +1,3 @@
-exclude build.sh
 include HISTORY.rst
 include LICENSE
 include pyproject.toml
