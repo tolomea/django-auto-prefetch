@@ -7,7 +7,6 @@ import pytest
 from django.core.exceptions import ObjectDoesNotExist
 
 import auto_prefetch
-
 from . import models
 
 
