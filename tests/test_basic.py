@@ -3,10 +3,10 @@ from __future__ import annotations
 import gc
 import pickle
 
-import auto_prefetch
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
 
+import auto_prefetch
 from . import models
 
 

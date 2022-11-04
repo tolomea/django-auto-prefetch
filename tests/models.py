@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import auto_prefetch
 from django.db import models
+
+import auto_prefetch
 
 
 class Friend(models.Model):
