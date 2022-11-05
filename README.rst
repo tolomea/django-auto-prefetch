@@ -78,6 +78,25 @@ to swap for the ``auto_prefetch`` versions in your subclasses’ bases.
    ``Meta.base_manager_name`` on your models, make sure it inherits from
    ``auto_prefetch.Manager``.
 
+
+When using an abstract model, make sure its ``Meta`` class inherits from ``auto_prefetch.Model.Meta``. See https://github.com/tolomea/django-auto-prefetch/issues/194
+
+.. code:: python
+
+   import auto_prefetch
+   from django.db import models
+
+
+   class MyAbtractModel(auto_prefetch.Model):
+       author = auto_prefetch.ForeignKey("Author", on_delete=models.CASCADE)
+
+       class Meta(auto_prefetch.Model.Meta):
+         # There is no need to set abstract = True, 
+         # since auto_prefetch.Model.Meta does it already.
+         pass
+      
+
+
 Background and Rationale
 ------------------------
 
