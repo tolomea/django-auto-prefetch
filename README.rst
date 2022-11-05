@@ -91,10 +91,10 @@ When using an abstract model, make sure its ``Meta`` class inherits from ``auto_
        author = auto_prefetch.ForeignKey("Author", on_delete=models.CASCADE)
 
        class Meta(auto_prefetch.Model.Meta):
-         # There is no need to set abstract = True, 
-         # since auto_prefetch.Model.Meta does it already.
-         pass
-      
+           # There is no need to set abstract = True,
+           # since auto_prefetch.Model.Meta does it already.
+           pass
+
 
 
 Background and Rationale
