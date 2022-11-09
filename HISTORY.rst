@@ -2,6 +2,9 @@
 History
 =======
 
+1.4.0 (2022-11-09)
+------------------
+
 * Reduce memory footprint when fetching single objects.
 
 1.3.0 (2022-06-05)
