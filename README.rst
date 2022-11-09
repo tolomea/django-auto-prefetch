@@ -40,43 +40,50 @@ Usage
 
 2. Change all these imports from ``django.db.models`` to ``auto_prefetch``:
 
--  ``ForeignKey``
--  ``Manager``
--  ``Model``
--  ``OneToOneField``
--  ``QuerySet``
+   *  ``ForeignKey``
+   *  ``Manager``
+   *  ``Model`` - including inheriting ``Meta`` from ``auto_prefetch.Model.Meta``
+   *  ``OneToOneField``
+   *  ``QuerySet``
 
-For example, if you had:
+   If you use custom subclasses of any of these classes, you should be able to swap for the ``auto_prefetch`` versions in your subclasses’ bases.
 
-.. code:: python
+   For example, if you had:
 
-   from django.db import models
+   .. code:: python
 
-
-   class Book(models.Model):
-       author = models.ForeignKey("Author", on_delete=models.CASCADE)
-
-…swap to:
-
-.. code:: python
-
-   import auto_prefetch
-   from django.db import models
+      from django.db import models
 
 
-   class Book(auto_prefetch.Model):
-       author = auto_prefetch.ForeignKey("Author", on_delete=models.CASCADE)
+      class Book(models.Model):
+          author = models.ForeignKey("Author", on_delete=models.CASCADE)
 
-If you use custom subclasses of any of these classes, you should be able
-to swap for the ``auto_prefetch`` versions in your subclasses’ bases.
+          class Meta:
+              verbose_name = "Book"
 
-3. Run ``python manage.py makemigrations`` to generate migrations, which set
-   the ``Meta.base_manager_name`` option
-   (`docs <https://docs.djangoproject.com/en/3.0/ref/models/options/#base-manager-name>`__)
-   to ``prefetch_manager`` on every model you’ve converted. This is to make
-   sure auto-prefetching happens on related managers. If you instead set
-   ``Meta.base_manager_name`` on your models, make sure it inherits from
-   ``auto_prefetch.Manager``.
+   …swap to:
+
+   .. code:: python
+
+      import auto_prefetch
+      from django.db import models
+
+
+      class Book(auto_prefetch.Model):
+          author = auto_prefetch.ForeignKey("Author", on_delete=models.CASCADE)
+
+          class Meta(auto_prefetch.Model.Meta):
+              verbose_name = "Book"
+
+3. Run ``python manage.py makemigrations`` to generate migrations for all the models you modified.
+   These migrations will set the |Meta.base_manager_name option|__ to ``prefetch_manager`` for every model that you’ve converted.
+   This change ensures that auto-prefetching happens on related managers.
+   Such migrations do not change anything in the database.
+
+   .. |Meta.base_manager_name option| replace:: ``Meta.base_manager_name`` option
+   __ https://docs.djangoproject.com/en/stable/ref/models/options/#base-manager-name
+
+   (If you instead set ``Meta.base_manager_name`` on your models, make sure it inherits from ``auto_prefetch.Manager``.)
 
 Background and Rationale
 ------------------------
