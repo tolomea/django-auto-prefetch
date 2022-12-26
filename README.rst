@@ -1,7 +1,7 @@
 django-auto-prefetch
 ====================
 
-.. image:: https://img.shields.io/github/workflow/status/tolomea/django-auto-prefetch/CI/main?style=for-the-badge
+.. image:: https://img.shields.io/github/actions/workflow/status/tolomea/django-auto-prefetch/main.yml?branch=main&style=for-the-badge
    :target: https://github.com/tolomea/django-auto-prefetch/actions?workflow=CI
 
 .. image:: https://img.shields.io/pypi/v/django-auto-prefetch.svg?style=for-the-badge
