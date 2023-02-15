@@ -1,9 +1,26 @@
 [build-system]
-requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools",
+]
 
 [tool.black]
 target-version = ['py37']
+
+[tool.pytest.ini_options]
+addopts = """\
+    --strict-config
+    --strict-markers
+    --durations=20
+    -ra
+    --ds=tests.settings
+    --cov auto_prefetch
+    --cov tests
+    --cov-report=term-missing:skip-covered
+    --no-cov-on-fail
+    --cov-fail-under=100
+    """
+django_find_project = false
 
 [tool.mypy]
 check_untyped_defs = true
@@ -20,18 +37,3 @@ warn_unused_ignores = true
 [[tool.mypy.overrides]]
 module = "tests.*"
 allow_untyped_defs = true
-
-[tool.pytest.ini_options]
-addopts = """\
-    --strict-config
-    --strict-markers
-    --durations=20
-    -ra
-    --ds=tests.settings
-    --cov auto_prefetch
-    --cov tests
-    --cov-report=term-missing:skip-covered
-    --no-cov-on-fail
-    --cov-fail-under=100
-    """
-django_find_project = false
