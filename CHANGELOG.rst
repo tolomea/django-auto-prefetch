@@ -2,6 +2,9 @@
 Changelog
 =========
 
+1.5.1 (2023-03-29)
+------------------
+
 * Fix the system check for ``Meta.base_manager_name`` to work with multiple inheritance of ``Meta`` classes.
 
   Thanks to Julius Seporaitis for the report in `Issue #228 <https://github.com/adamchainz/django-upgrade/issues/228>`__.
