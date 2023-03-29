@@ -5,9 +5,21 @@ import pickle
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 
 import auto_prefetch
-from . import models
+from .models import Associate
+from .models import Friend
+from .models import MixedField
+from .models import MixedModel
+from .models import Prefetch
+from .models import Prefetch2
+from .models import PrefetchForward
+from .models import PrefetchReverse
+from .models import Vanilla
+from .models import Vanilla2
+from .models import VanillaForward
+from .models import VanillaReverse
 
 
 def test_check_meta_inheritance_fail():
@@ -24,17 +36,62 @@ def test_check_meta_inheritance_fail():
     assert errors[0].id == "auto_prefetch.E001"
     assert errors[0].obj is TestModel1
     assert errors[0].msg == (
-        "TestModel1 inherits from auto_prefetch.Model, but its Meta class does"
-        + " not inherit from auto_prefetch.Model.Meta"
+        "TestModel1 inherits from auto_prefetch.Model"
+        + " but its base_manager_name is not"
+        + " 'prefetch_manager'"
+    )
+    assert errors[0].hint == (
+        "The base_manager_name is instead None. Check the Meta class inherits"
+        + " from auto_prefetch.Model.Meta."
+    )
+
+
+def test_check_meta_inheritance_fail_multiple_inheritance():
+    class TestModel2Base(models.Model):
+        class Meta:
+            abstract = True
+            base_manager_name = "objects"
+
+    class TestModel2(TestModel2Base, auto_prefetch.Model):
+        class Meta(TestModel2Base.Meta):
+            verbose_name = "something"
+
+    errors = TestModel2.check()
+
+    assert len(errors) == 1
+    assert errors[0].id == "auto_prefetch.E001"
+    assert errors[0].obj is TestModel2
+    assert errors[0].msg == (
+        "TestModel2 inherits from auto_prefetch.Model"
+        + " but its base_manager_name is not"
+        + " 'prefetch_manager'"
+    )
+    assert errors[0].hint == (
+        "The base_manager_name is instead 'objects'. Check the Meta class"
+        + " inherits from auto_prefetch.Model.Meta."
     )
 
 
 def test_check_meta_inheritance_success():
-    class TestModel2(auto_prefetch.Model):
+    class TestModel3(auto_prefetch.Model):
         class Meta(auto_prefetch.Model.Meta):
             verbose_name = "My model"
 
-    errors = TestModel2.check()
+    errors = TestModel3.check()
+
+    assert errors == []
+
+
+def test_check_meta_inheritance_success_multiple_inheritance():
+    class TestModel4Base(models.Model):
+        class Meta:
+            abstract = True
+
+    class TestModel4(TestModel4Base, auto_prefetch.Model):
+        class Meta(TestModel4Base.Meta, auto_prefetch.Model.Meta):
+            verbose_name = "My model"
+
+    errors = TestModel4.check()
 
     assert errors == []
 
@@ -42,15 +99,15 @@ def test_check_meta_inheritance_success():
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 4),
-        (models.Prefetch, 2),
-        (models.MixedModel, 4),
-        (models.MixedField, 4),
+        (Vanilla, 4),
+        (Prefetch, 2),
+        (MixedModel, 4),
+        (MixedField, 4),
     ],
 )
 @pytest.mark.django_db
 def test_basic(django_assert_num_queries, Model, queries):
-    friend = models.Friend.objects.create()
+    friend = Friend.objects.create()
     [Model.objects.create(friend=friend) for _ in range(3)]
 
     with django_assert_num_queries(queries):
@@ -61,15 +118,15 @@ def test_basic(django_assert_num_queries, Model, queries):
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 2),
-        (models.Prefetch, 2),
-        (models.MixedModel, 2),
-        (models.MixedField, 2),
+        (Vanilla, 2),
+        (Prefetch, 2),
+        (MixedModel, 2),
+        (MixedField, 2),
     ],
 )
 @pytest.mark.django_db
 def test_no_peers(django_assert_num_queries, Model, queries):
-    friend = models.Friend.objects.create()
+    friend = Friend.objects.create()
     Model.objects.create(friend=friend)
 
     with django_assert_num_queries(queries):
@@ -80,14 +137,14 @@ def test_no_peers(django_assert_num_queries, Model, queries):
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 1),
-        (models.Prefetch, 1),
-        (models.MixedModel, 1),
-        (models.MixedField, 1),
-        (models.VanillaForward, 1),
-        (models.PrefetchForward, 1),
-        (models.VanillaReverse, 4),
-        (models.PrefetchReverse, 2),
+        (Vanilla, 1),
+        (Prefetch, 1),
+        (MixedModel, 1),
+        (MixedField, 1),
+        (VanillaForward, 1),
+        (PrefetchForward, 1),
+        (VanillaReverse, 4),
+        (PrefetchReverse, 2),
     ],
 )
 @pytest.mark.django_db
@@ -105,15 +162,15 @@ def test_null(django_assert_num_queries, Model, queries):
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 1),
-        (models.Prefetch, 1),
-        (models.MixedModel, 1),
-        (models.MixedField, 1),
+        (Vanilla, 1),
+        (Prefetch, 1),
+        (MixedModel, 1),
+        (MixedField, 1),
     ],
 )
 @pytest.mark.django_db
 def test_values(django_assert_num_queries, Model, queries):
-    friend = models.Friend.objects.create()
+    friend = Friend.objects.create()
     [Model.objects.create(friend=friend) for _ in range(3)]
 
     with django_assert_num_queries(queries):
@@ -124,16 +181,16 @@ def test_values(django_assert_num_queries, Model, queries):
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 7),
-        (models.Prefetch, 2),
-        (models.MixedModel, 7),
-        (models.MixedField, 7),
+        (Vanilla, 7),
+        (Prefetch, 2),
+        (MixedModel, 7),
+        (MixedField, 7),
     ],
 )
 @pytest.mark.django_db
 def test_multiples(django_assert_num_queries, Model, queries):
-    friend = models.Friend.objects.create()
-    associates = [models.Associate.objects.create(number=6) for _ in range(2)]
+    friend = Friend.objects.create()
+    associates = [Associate.objects.create(number=6) for _ in range(2)]
     for _ in range(3):
         obj = Model.objects.create(friend=friend)
         obj.associates.set(associates)
@@ -149,16 +206,16 @@ def test_multiples(django_assert_num_queries, Model, queries):
 def test_garbage_collection():
     def check_instances(num):
         gc.collect()
-        objs = [o for o in gc.get_objects() if isinstance(o, models.Prefetch)]
+        objs = [o for o in gc.get_objects() if isinstance(o, Prefetch)]
         assert len(objs) == num
 
-    friend = models.Friend.objects.create()
-    [models.Prefetch.objects.create(friend=friend) for _ in range(3)]
+    friend = Friend.objects.create()
+    [Prefetch.objects.create(friend=friend) for _ in range(3)]
     del friend
 
     check_instances(0)
 
-    objs = list(models.Prefetch.objects.all())
+    objs = list(Prefetch.objects.all())
 
     check_instances(3)
 
@@ -172,11 +229,11 @@ def test_garbage_collection():
 
 @pytest.mark.parametrize(
     "Model,Model2,queries",
-    [(models.Vanilla, models.Vanilla2, 7), (models.Prefetch, models.Prefetch2, 3)],
+    [(Vanilla, Vanilla2, 7), (Prefetch, Prefetch2, 3)],
 )
 @pytest.mark.django_db
 def test_cascading(django_assert_num_queries, Model, Model2, queries):
-    friend = models.Friend.objects.create()
+    friend = Friend.objects.create()
     for _ in range(3):
         obj = Model.objects.create(friend=friend)
         Model2.objects.create(other=obj)
@@ -189,8 +246,8 @@ def test_cascading(django_assert_num_queries, Model, Model2, queries):
 @pytest.mark.parametrize(
     "Model,FriendModel,queries",
     [
-        (models.VanillaForward, models.VanillaReverse, 4),
-        (models.PrefetchForward, models.PrefetchReverse, 2),
+        (VanillaForward, VanillaReverse, 4),
+        (PrefetchForward, PrefetchReverse, 2),
     ],
 )
 @pytest.mark.django_db
@@ -211,8 +268,8 @@ def test_basic_one2one(django_assert_num_queries, Model, FriendModel, queries):
 @pytest.mark.parametrize(
     "Model,FriendModel,queries",
     [
-        (models.VanillaForward, models.VanillaReverse, 2),
-        (models.PrefetchForward, models.PrefetchReverse, 2),
+        (VanillaForward, VanillaReverse, 2),
+        (PrefetchForward, PrefetchReverse, 2),
     ],
 )
 @pytest.mark.django_db
@@ -232,15 +289,15 @@ def test_one2one_no_peers(django_assert_num_queries, Model, FriendModel, queries
 @pytest.mark.parametrize(
     "Model,queries",
     [
-        (models.Vanilla, 4),
-        (models.Prefetch, 4),
-        (models.MixedModel, 4),
-        (models.MixedField, 4),
+        (Vanilla, 4),
+        (Prefetch, 4),
+        (MixedModel, 4),
+        (MixedField, 4),
     ],
 )
 @pytest.mark.django_db
 def test_pickle(django_assert_num_queries, Model, queries):
-    friend = models.Friend.objects.create()
+    friend = Friend.objects.create()
     [Model.objects.create(friend=friend) for _ in range(3)]
 
     with django_assert_num_queries(queries):

@@ -139,15 +139,21 @@ class Model(models.Model):
     @classmethod
     def _check_meta_inheritance(cls) -> list[checks.Error]:
         errors = []
-        if not issubclass(cls.Meta, Model.Meta):
+        base_manager_name = cls._meta.base_manager_name
+        if base_manager_name != "prefetch_manager":
             errors.append(
                 checks.Error(
                     id="auto_prefetch.E001",
                     obj=cls,
                     msg=(
-                        f"{cls.__name__} inherits from auto_prefetch.Model,"
-                        + " but its Meta class does not inherit from"
-                        + " auto_prefetch.Model.Meta"
+                        f"{cls.__name__} inherits from auto_prefetch.Model"
+                        + " but its base_manager_name is not"
+                        + " 'prefetch_manager'"
+                    ),
+                    hint=(
+                        f"The base_manager_name is instead {base_manager_name!r}."
+                        + " Check the Meta class inherits from"
+                        + " auto_prefetch.Model.Meta."
                     ),
                 )
             )
