@@ -151,9 +151,8 @@ class Model(models.Model):
                         + " 'prefetch_manager'"
                     ),
                     hint=(
-                        f"The base_manager_name is instead {base_manager_name!r}."
-                        + " Check the Meta class inherits from"
-                        + " auto_prefetch.Model.Meta."
+                        "Set base_manager_name = 'prefetch_manager' in"
+                        + f" {cls.__name__}.Meta."
                     ),
                 )
             )
