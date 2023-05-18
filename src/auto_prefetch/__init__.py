@@ -80,7 +80,7 @@ class ReverseOneToOneDescriptor(
     def _is_cached(self, instance: models.Model) -> bool:
         return self.related.is_cached(instance)
 
-    def _field_name(self) -> str | None:
+    def _field_name(self) -> str:
         return self.related.get_accessor_name()
 
 
