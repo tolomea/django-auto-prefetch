@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* Tweak check message for ``Meta.base_manager_name`` to suggest explicitly setting in the model’s meta class.
+  This is easier and more robust than inheriting from ``auto_prefetch.Model.Meta``.
+
 1.5.1 (2023-03-29)
 ------------------
 
