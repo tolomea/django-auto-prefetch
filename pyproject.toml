@@ -4,6 +4,41 @@ requires = [
   "setuptools",
 ]
 
+[project]
+name = "django-auto-prefetch"
+version = "1.8.0"
+description = "Automatically prefetch foreign key values as needed."
+readme = {file = "README.rst", content-type = "text/x-rst"}
+license = {text = "BSD-3-Clause"}
+authors = [{name = "Gordon Wrigley", email = "gordon.wrigley@gmail.com"}]
+requires-python = ">=3.8"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Framework :: Django :: 3.2",
+  "Framework :: Django :: 4.0",
+  "Framework :: Django :: 4.1",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Typing :: Typed",
+]
+dependencies = [
+  "Django>=3.2",
+]
+[project.urls]
+Changelog = "https://github.com/tolomea/django-auto-prefetch/blob/main/CHANGELOG.rst"
+Repository = "https://github.com/tolomea/django-auto-prefetch"
+
 [tool.black]
 target-version = ['py38']
 
