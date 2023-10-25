@@ -79,7 +79,9 @@ coverage[toml]==7.3.2 \
     --hash=sha256:f94b734214ea6a36fe16e96a70d941af80ff3bfd716c141300d95ebc85339738 \
     --hash=sha256:fa28e909776dc69efb6ed975a63691bc8172b64ff357e663a1bb06ff3c9b589a \
     --hash=sha256:fe494faa90ce6381770746077243231e0b83ff3f17069d748f645617cefe19d4
-    # via pytest-cov
+    # via
+    #   -r requirements.in
+    #   pytest-cov
 django==4.2.6 \
     --hash=sha256:08f41f468b63335aea0d904c5729e0250300f6a1907bf293a65499496cdbc68f \
     --hash=sha256:a64d2487cdb00ad7461434320ccc38e60af9c404773a2f95ab0093b4453a3215
