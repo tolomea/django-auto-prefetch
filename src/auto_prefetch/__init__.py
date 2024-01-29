@@ -13,15 +13,13 @@ if TYPE_CHECKING:  # pragma: no cover
     class DescriptorBase:
         field: models.Field
 
-        def is_cached(self, instance: models.Model) -> bool:
-            ...
+        def is_cached(self, instance: models.Model) -> bool: ...
 
         def __get__(
             self,
             instance: models.Model | None,
             instance_type: type[models.Model] | None = None,
-        ) -> Any:
-            ...
+        ) -> Any: ...
 
 else:
     DescriptorBase = object
