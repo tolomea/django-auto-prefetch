@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
 import auto_prefetch
+
 from .models import Associate
 from .models import Friend
 from .models import MixedField
