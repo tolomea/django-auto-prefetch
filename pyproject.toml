@@ -39,9 +39,6 @@ dependencies = [
 Changelog = "https://github.com/tolomea/django-auto-prefetch/blob/main/CHANGELOG.rst"
 Repository = "https://github.com/tolomea/django-auto-prefetch"
 
-[tool.black]
-target-version = ['py38']
-
 [tool.isort]
 add_imports = [
     "from __future__ import annotations"
