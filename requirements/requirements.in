@@ -1,6 +1,5 @@
 coverage[toml]
 django
 pytest
-pytest-cov
 pytest-django
 pytest-randomly
