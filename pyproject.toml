@@ -50,16 +50,26 @@ profile = "black"
 addopts = """\
     --strict-config
     --strict-markers
-    --durations=20
-    -ra
     --ds=tests.settings
-    --cov auto_prefetch
-    --cov tests
-    --cov-report=term-missing:skip-covered
-    --no-cov-on-fail
-    --cov-fail-under=100
     """
 django_find_project = false
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = [
+    "auto_prefetch",
+    "tests",
+]
+
+[tool.coverage.paths]
+source = [
+    "src",
+    ".tox/**/site-packages",
+]
+
+[tool.coverage.report]
+show_missing = true
 
 [tool.mypy]
 check_untyped_defs = true
