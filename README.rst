@@ -4,6 +4,9 @@ django-auto-prefetch
 .. image:: https://img.shields.io/github/actions/workflow/status/tolomea/django-auto-prefetch/main.yml?branch=main&style=for-the-badge
    :target: https://github.com/tolomea/django-auto-prefetch/actions?workflow=CI
 
+.. image:: https://img.shields.io/badge/Coverage-100%25-success?style=for-the-badge
+   :target: https://github.com/tolomea/django-auto-prefetch/actions?workflow=CI
+
 .. image:: https://img.shields.io/pypi/v/django-auto-prefetch.svg?style=for-the-badge
    :target: https://pypi.org/project/django-auto-prefetch/
 
