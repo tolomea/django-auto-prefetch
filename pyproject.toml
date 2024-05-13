@@ -8,9 +8,11 @@ requires = [
 name = "django-auto-prefetch"
 version = "1.8.0"
 description = "Automatically prefetch foreign key values as needed."
-readme = {file = "README.rst", content-type = "text/x-rst"}
-license = {text = "BSD-3-Clause"}
-authors = [{name = "Gordon Wrigley", email = "gordon.wrigley@gmail.com"}]
+readme = { file = "README.rst", content-type = "text/x-rst" }
+license = { text = "BSD-3-Clause" }
+authors = [
+  { name = "Gordon Wrigley", email = "gordon.wrigley@gmail.com" },
+]
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -33,15 +35,13 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "Django>=3.2",
+  "django>=3.2",
 ]
-[project.urls]
-Changelog = "https://github.com/tolomea/django-auto-prefetch/blob/main/CHANGELOG.rst"
-Repository = "https://github.com/tolomea/django-auto-prefetch"
-
+urls.Changelog = "https://github.com/tolomea/django-auto-prefetch/blob/main/CHANGELOG.rst"
+urls.Repository = "https://github.com/tolomea/django-auto-prefetch"
 [tool.isort]
 add_imports = [
-    "from __future__ import annotations"
+  "from __future__ import annotations",
 ]
 force_single_line = true
 profile = "black"
@@ -58,14 +58,14 @@ django_find_project = false
 branch = true
 parallel = true
 source = [
-    "auto_prefetch",
-    "tests",
+  "auto_prefetch",
+  "tests",
 ]
 
 [tool.coverage.paths]
 source = [
-    "src",
-    ".tox/**/site-packages",
+  "src",
+  ".tox/**/site-packages",
 ]
 
 [tool.coverage.report]
