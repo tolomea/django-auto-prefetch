@@ -39,6 +39,7 @@ dependencies = [
 ]
 urls.Changelog = "https://github.com/tolomea/django-auto-prefetch/blob/main/CHANGELOG.rst"
 urls.Repository = "https://github.com/tolomea/django-auto-prefetch"
+
 [tool.isort]
 add_imports = [
   "from __future__ import annotations",
