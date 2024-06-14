@@ -111,6 +111,8 @@ Manager = models.Manager.from_queryset(QuerySet)
 
 
 class Model(models.Model):
+    _peers: WeakValueDictionary[str, Model]
+
     class Meta:
         abstract = True
         base_manager_name = "prefetch_manager"
@@ -129,8 +131,8 @@ class Model(models.Model):
         return res
 
     @classmethod
-    def check(cls, **kwargs: Any) -> list[checks.Error]:
-        errors: list[checks.Error] = super().check(**kwargs)
+    def check(cls, **kwargs: Any) -> list[checks.CheckMessage]:
+        errors: list[checks.CheckMessage] = super().check(**kwargs)
         errors.extend(cls._check_meta_inheritance())
         return errors
 
