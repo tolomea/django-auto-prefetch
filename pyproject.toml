@@ -8,8 +8,7 @@ requires = [
 name = "django-auto-prefetch"
 version = "1.8.0"
 description = "Automatically prefetch foreign key values as needed."
-readme = { file = "README.rst", content-type = "text/x-rst" }
-license = { text = "BSD-3-Clause" }
+readme = "README.rst"
 authors = [
   { name = "Gordon Wrigley", email = "gordon.wrigley@gmail.com" },
 ]
