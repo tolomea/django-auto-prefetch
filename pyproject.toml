@@ -41,7 +41,6 @@ urls.Repository = "https://github.com/tolomea/django-auto-prefetch"
 [dependency-groups]
 test = [
   "coverage[toml]",
-  "django",
   "pytest",
   "pytest-django",
   "pytest-randomly",
