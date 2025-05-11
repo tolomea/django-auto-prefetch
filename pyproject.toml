@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-  "setuptools",
+  "setuptools>=77",
 ]
 
 [project]
@@ -9,6 +9,8 @@ name = "django-auto-prefetch"
 version = "1.12.0"
 description = "Automatically prefetch foreign key values as needed."
 readme = "README.rst"
+license = "BSD-3-Clause"
+license-files = [ "LICENSE" ]
 authors = [
   { name = "Gordon Wrigley", email = "gordon.wrigley@gmail.com" },
 ]
@@ -20,7 +22,6 @@ classifiers = [
   "Framework :: Django :: 5.1",
   "Framework :: Django :: 5.2",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: BSD License",
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
