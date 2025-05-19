@@ -86,6 +86,7 @@ lint.extend-safe-fixes = [
   # non-pep585-annotation
   "UP006",
 ]
+lint.isort.required-imports = [ "from __future__ import annotations" ]
 
 [tool.coverage.paths]
 source = [
