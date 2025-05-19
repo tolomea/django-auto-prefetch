@@ -9,18 +9,20 @@ from django.db import models
 
 import auto_prefetch
 
-from .models import Associate
-from .models import Friend
-from .models import MixedField
-from .models import MixedModel
-from .models import Prefetch
-from .models import Prefetch2
-from .models import PrefetchForward
-from .models import PrefetchReverse
-from .models import Vanilla
-from .models import Vanilla2
-from .models import VanillaForward
-from .models import VanillaReverse
+from .models import (
+    Associate,
+    Friend,
+    MixedField,
+    MixedModel,
+    Prefetch,
+    Prefetch2,
+    PrefetchForward,
+    PrefetchReverse,
+    Vanilla,
+    Vanilla2,
+    VanillaForward,
+    VanillaReverse,
+)
 
 
 def test_check_meta_inheritance_fail():

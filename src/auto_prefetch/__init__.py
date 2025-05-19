@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from weakref import WeakValueDictionary
 
 from django.core import checks
@@ -55,9 +54,7 @@ class ForwardDescriptorMixin(DescriptorMixin):
     def _should_prefetch(self, instance: models.Model | None) -> bool:
         return super()._should_prefetch(
             instance
-        ) and None not in self.field.get_local_related_value(
-            instance
-        )  # field is null
+        ) and None not in self.field.get_local_related_value(instance)  # field is null
 
 
 class ForwardManyToOneDescriptor(
