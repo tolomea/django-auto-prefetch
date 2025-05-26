@@ -88,6 +88,26 @@ lint.extend-safe-fixes = [
 ]
 lint.isort.required-imports = [ "from __future__ import annotations" ]
 
+[tool.pyproject-fmt]
+max_supported_python = "3.13"
+
+[tool.pytest.ini_options]
+addopts = """\
+    --strict-config
+    --strict-markers
+    --ds=tests.settings
+    """
+django_find_project = false
+xfail_strict = true
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = [
+  "auto_prefetch",
+  "tests",
+]
+
 [tool.coverage.paths]
 source = [
   "src",
