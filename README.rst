@@ -190,3 +190,8 @@ P.S.
 If you have concerns go look at the code, it’s all in
 `auto_prefetch/__init__.py <https://github.com/tolomea/django-auto-prefetch/blob/main/src/auto_prefetch/__init__.py>`__
 and is fairly short.
+
+History
+-------
+
+django-auto-prefetch was written by `Gordon Wrigley <https://github.com/tolomea>`__ and is maintained by `Adam Johnson <https://github.com/adamchainz>`__.
